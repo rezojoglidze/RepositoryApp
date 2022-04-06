@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Alamofire
 
 protocol RepositorySearchUseCase {
     func searchRepository(isPaginating: Bool, name: String, reload: Bool,
@@ -21,7 +20,7 @@ final class DefaultRepositorySearchUseCase {
     private init() { }
     
     private var pageNumber = 0
-    private var perPage =  15
+    private var perPage =  10
 }
 
 extension DefaultRepositorySearchUseCase: RepositorySearchUseCase {
@@ -39,14 +38,15 @@ extension DefaultRepositorySearchUseCase: RepositorySearchUseCase {
         guard let url = URL(string: "\(Constants.endPoint)/\(name)/repos?per_page=\(perPage)&page=\(pageNumber)") else { return }
         print(url)
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: url) {[weak self] data, response, error in
             if let data = data {
                 let jsonDecoder = JSONDecoder()
              
                 do {
-                    let convertation = try jsonDecoder.decode([Repository].self, from: data)
-                    completionHandler(.success(convertation))
+                    let repositories = try jsonDecoder.decode([Repository].self, from: data)
+                    completionHandler(.success(repositories))
                 } catch {
+                    self?.pageNumber -= 1
                     completionHandler(.failure(error))
                 }
             }

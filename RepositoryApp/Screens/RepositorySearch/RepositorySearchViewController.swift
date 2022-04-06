@@ -17,10 +17,8 @@ class RepositorySearchViewController: UIViewController {
     //MARK: @IBOutlet
     @IBOutlet private weak var tableView: UITableView!
     
+    //MARK: Variables
     private let searchController = UISearchController()
-    private var repositories: [Repository] = []
-    private var isPaging = false
-    private var pageNumberIsNeededReload = false
 
     var viewModel: RepositorySearchViewModelInterface!
 
@@ -39,6 +37,7 @@ class RepositorySearchViewController: UIViewController {
     
     //MARK: Functions
     private func setupView() {
+        title = "Repositories"
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
     }
@@ -49,27 +48,22 @@ class RepositorySearchViewController: UIViewController {
         tableView.delegate = self
     }
     
-    private func searchRepositories(pagination: Bool, name: String) {
-        viewModel.searchRepositories(pagination: isPaging, name: name, reload: pageNumberIsNeededReload)
+    private func searchRepositories(name: String) {
+        viewModel.searchRepositories(name: name)
     }
 }
 
 //MARK: RepositorySearchViewInterface
 extension RepositorySearchViewController: RepositorySearchViewInterface {
     func repositoriesDidLoad(repositories: [Repository]) {
-        if pageNumberIsNeededReload {
-            self.repositories = repositories
+        if viewModel.isRepositoryUsernameChanged {
             tableView.reloadData()
-            pageNumberIsNeededReload = false
             return
         }
         
         if repositories.isEmpty {
             self.tableView.tableFooterView = nil
-            isPaging = false
         } else {
-            isPaging = true
-            self.repositories.append(contentsOf: repositories)
             tableView.reloadData()
             self.tableView.tableFooterView = nil
         }
@@ -78,25 +72,29 @@ extension RepositorySearchViewController: RepositorySearchViewInterface {
 
 extension RepositorySearchViewController: UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repositories.count
+        return viewModel.numberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RepositoryTableViewCell.self)) as? RepositoryTableViewCell
-        let repo = repositories[indexPath.row]
-        cell?.fill(username: repo.owner?.ownerName ?? "", repositoryName: repo.fullName ?? "", imageUrl: repo.owner?.avatarUrl ?? "")
+        let repo = viewModel.getRepository(with: indexPath)
+        cell?.fill(username: repo.owner.ownerName, repositoryName: repo.fullName, imageUrl: repo.owner.avatarUrl)
         return cell ?? UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.didSelectRowAt(at: indexPath)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if tableView.contentOffset.y > tableView.contentSize.height - tableView.frame.size.height
-            && isPaging {
-//            isPaging = true
+            && !viewModel.isPaginationInProcess && !viewModel.isReachedMaxPagingIndex {
             
             if let text = searchController.searchBar.text?.removeWhitespace().lowercased() {
                 if !text.isEmpty {
                     self.tableView.tableFooterView = createSpinnerFooter()
-                    searchRepositories(pagination: true, name: text)
+                    viewModel.isPaginationInProcess = true
+                    searchRepositories(name: text)
                 }
             }
         }
@@ -116,11 +114,12 @@ extension RepositorySearchViewController: UITableViewDataSource, UITableViewDele
 extension RepositorySearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchController.searchBar.text?.removeWhitespace().lowercased() {
-            searchRepositories(pagination: false, name: text)
+            searchRepositories(name: text)
         }
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        pageNumberIsNeededReload = true
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        viewModel.isRepositoryUsernameChanged = true
+        viewModel.isReachedMaxPagingIndex = false
     }
 }

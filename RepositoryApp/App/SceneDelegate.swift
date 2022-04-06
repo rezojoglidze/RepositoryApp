@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: windowScene)
         guard let window = window else { return }
         self.appCoordinator = AppCoordinator(window: window)
-        appCoordinator?.start()
+        appCoordinator?.showRepositorySearchView()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -17,11 +17,18 @@ class RepositoryCoordinator: Coordinator {
         self.navigationController = navigationController
     }
     
-    func start() {
+    func showRepositorySearchView() {
         let viewController = RepositorySearchViewController.instantiate()
         let viewModel = RepositorySearchViewModel(view: viewController, coordinator: self, repositorySearchUseCase: DefaultRepositorySearchUseCase.shared)
         viewController.viewModel = viewModel
         navigationController.setViewControllers([viewController], animated: false)
+    }
+    
+    func showRepositoryDetailsView(fullName: String) {
+        let viewController = RepositoryDetailsViewController.instantiate()
+        let viewModel = RepositoryDetailsViewModel(view: viewController, coordinator: self, repoOwnerFullName: fullName, repositoryDetailsUseCase: DefaultRepositoryDetailsUseCase.shared)
+        viewController.viewModel = viewModel
+        navigationController.pushViewController(viewController, animated: true)
     }
     
     func showAlert(title: String, text: String) {

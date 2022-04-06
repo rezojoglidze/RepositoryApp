@@ -10,7 +10,7 @@ import UIKit
 
 protocol Coordinator: AnyObject {
     var childCoordinators: [Coordinator] { get }
-    func start()
+    func showRepositorySearchView()
 }
 
 final class AppCoordinator: Coordinator {
@@ -22,11 +22,11 @@ final class AppCoordinator: Coordinator {
         self.window = window
     }
     
-    func start() {
+    func showRepositorySearchView() {
         let navigationController = UINavigationController()
         let repositoryCoordinator = RepositoryCoordinator(navigationController: navigationController)
         childCoordinators.append(repositoryCoordinator)
-        repositoryCoordinator.start()
+        repositoryCoordinator.showRepositorySearchView()
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
