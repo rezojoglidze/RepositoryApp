@@ -9,11 +9,12 @@ import Foundation
 
 //MARK: RepositorySearchViewModelInterface
 protocol RepositorySearchViewModelInterface: AnyObject {
-    var coordinator: RepositoryCoordinator { get }
+    var repoSearchCoordinator: RepositorySearchCoordinator? { get }
+    var starredRepoCoordinator: StarredRepositoryCoordinator? { get }
     var isRepositoryUsernameChanged: Bool { get set }
     var isPaginationInProcess: Bool { get set }
     var isReachedMaxPagingIndex: Bool { get set }
-
+    
     func searchRepositories(name: String)
     
     func numberOfRowsInSection() -> Int
@@ -25,21 +26,33 @@ class RepositorySearchViewModel {
     
     //MARK: Variables
     weak var view: RepositorySearchViewInterface?
-    var coordinator: RepositoryCoordinator
+    var repoSearchCoordinator: RepositorySearchCoordinator?
+    private var repositorySearchUseCase: RepositorySearchUseCase?
+
+    var starredRepoCoordinator: StarredRepositoryCoordinator?
+    private var starredRepositoryUseCase: StarredRepositoryUseCase?
+    
     var isRepositoryUsernameChanged = false
     var isPaginationInProcess = false
     var isReachedMaxPagingIndex = false
 
-    private let repositorySearchUseCase: RepositorySearchUseCase
     private var repositories: [Repository] = []
 
-    //MARK: Init
+    //MARK: Repository Search View Init
     init(view: RepositorySearchViewInterface,
-         coordinator: RepositoryCoordinator,
+         repoSearchCoordinator: RepositorySearchCoordinator,
          repositorySearchUseCase: RepositorySearchUseCase) {
         self.view = view
-        self.coordinator = coordinator
+        self.repoSearchCoordinator = repoSearchCoordinator
         self.repositorySearchUseCase = repositorySearchUseCase
+    }
+    
+    init(view: RepositorySearchViewInterface,
+         starredRepoCoordinator: StarredRepositoryCoordinator,
+         starredRepositoryUseCase: StarredRepositoryUseCase) {
+        self.view = view
+        self.starredRepoCoordinator = starredRepoCoordinator
+        self.starredRepositoryUseCase = starredRepositoryUseCase
     }
 }
 
@@ -56,17 +69,17 @@ extension RepositorySearchViewModel: RepositorySearchViewModelInterface {
     
     func didSelectRowAt(at indexPath: IndexPath) {
         let repo = repositories[indexPath.row]
-        coordinator.showRepositoryDetailsView(fullName: repo.fullName)
+        repoSearchCoordinator?.showRepositoryDetailsView(fullName: repo.fullName)
     }
     
     func searchRepositories(name: String) {
-        repositorySearchUseCase.searchRepository(isPaginating: isPaginationInProcess, name: name, reload: isRepositoryUsernameChanged) { [weak self] response in
+        repositorySearchUseCase?.searchRepository(isPaginating: isPaginationInProcess, name: name, reload: isRepositoryUsernameChanged) { [weak self] response in
             switch response {
             case .success(let repositories):
                     self?.repositoriesDidLoad(repositories: repositories)
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.coordinator.showAlert(title: "Something went wrong", text: error.localizedDescription)
+                    self?.repoSearchCoordinator?.showAlert(title: "Something went wrong", text: error.localizedDescription)
                     self?.returnValuesInPreviousState()
                 }
             }

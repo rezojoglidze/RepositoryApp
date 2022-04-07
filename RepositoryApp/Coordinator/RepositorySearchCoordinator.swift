@@ -5,23 +5,29 @@
 //  Created by Rezo Joglidze on 05.04.22.
 //
 
-import Foundation
 import UIKit
 
-class RepositoryCoordinator: Coordinator {
-    private(set) var childCoordinators: [Coordinator] = []
+class RepositorySearchCoordinator: Coordinator {
+    weak var parentCoordinator: MainCoordinator? //retain cicly avoid because main coordinator olready owns the child.
     
-    private let navigationController: UINavigationController
+    var childCoordinators: [Coordinator] = []
+    
+    var navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
+    func start() {
+        showRepositorySearchView()
+    }
+    
     func showRepositorySearchView() {
         let viewController = RepositorySearchViewController.instantiate()
-        let viewModel = RepositorySearchViewModel(view: viewController, coordinator: self, repositorySearchUseCase: DefaultRepositorySearchUseCase.shared)
+        viewController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        let viewModel = RepositorySearchViewModel(view: viewController, repoSearchCoordinator: self, repositorySearchUseCase: DefaultRepositorySearchUseCase.shared)
         viewController.viewModel = viewModel
-        navigationController.setViewControllers([viewController], animated: false)
+        navigationController.pushViewController(viewController, animated: false)
     }
     
     func showRepositoryDetailsView(fullName: String) {

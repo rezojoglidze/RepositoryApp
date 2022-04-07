@@ -34,7 +34,7 @@ class RepositorySearchViewController: UIViewController {
         setupView()
         setupTableView()
     }
-    
+
     //MARK: Functions
     private func setupView() {
         title = "Repositories"
