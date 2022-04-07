@@ -55,7 +55,7 @@ final class MainCoordinator: NSObject, MainCoordinatorProtocol, UINavigationCont
         }
         
         if let repositorySearchViewController = fromViewContoller as? RepositorySearchViewController {
-            childDidFinish(repositorySearchViewController.viewModel.repoSearchCoordinator)
+            childDidFinish(repositorySearchViewController.viewModel.coordinator)
         }
     }
 }

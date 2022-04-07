@@ -24,9 +24,9 @@ class StarredRepositoryCoordinator: Coordinator {
     }
     
     func showStarredRepositoryView() {
-        let viewController = RepositorySearchViewController.instantiate()
+        let viewController = StarredRepositoryViewController.instantiate()
         viewController.tabBarItem = UITabBarItem(tabBarSystemItem: .downloads, tag: 0)
-        let viewModel = RepositorySearchViewModel(view: viewController, starredRepoCoordinator: self, starredRepositoryUseCase: DefaultStarredRepositoryUseCase.shared)
+        let viewModel = StarredRepositoryViewModel(view: viewController, coordinator: self, starredRepositoryUseCase: DefaultStarredRepositoryUseCase.shared)
         viewController.viewModel = viewModel
         navigationController.pushViewController(viewController, animated: false)
     }

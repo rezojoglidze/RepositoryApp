@@ -9,8 +9,8 @@ import Foundation
 
 //MARK: RepositorySearchViewModelInterface
 protocol RepositorySearchViewModelInterface: AnyObject {
-    var repoSearchCoordinator: RepositorySearchCoordinator? { get }
-    var starredRepoCoordinator: StarredRepositoryCoordinator? { get }
+    var coordinator: RepositorySearchCoordinator? { get }
+    
     var isRepositoryUsernameChanged: Bool { get set }
     var isPaginationInProcess: Bool { get set }
     var isReachedMaxPagingIndex: Bool { get set }
@@ -26,7 +26,7 @@ class RepositorySearchViewModel {
     
     //MARK: Variables
     weak var view: RepositorySearchViewInterface?
-    var repoSearchCoordinator: RepositorySearchCoordinator?
+    var coordinator: RepositorySearchCoordinator?
     private var repositorySearchUseCase: RepositorySearchUseCase?
 
     var starredRepoCoordinator: StarredRepositoryCoordinator?
@@ -40,19 +40,11 @@ class RepositorySearchViewModel {
 
     //MARK: Repository Search View Init
     init(view: RepositorySearchViewInterface,
-         repoSearchCoordinator: RepositorySearchCoordinator,
+         coordinator: RepositorySearchCoordinator,
          repositorySearchUseCase: RepositorySearchUseCase) {
         self.view = view
-        self.repoSearchCoordinator = repoSearchCoordinator
+        self.coordinator = coordinator
         self.repositorySearchUseCase = repositorySearchUseCase
-    }
-    
-    init(view: RepositorySearchViewInterface,
-         starredRepoCoordinator: StarredRepositoryCoordinator,
-         starredRepositoryUseCase: StarredRepositoryUseCase) {
-        self.view = view
-        self.starredRepoCoordinator = starredRepoCoordinator
-        self.starredRepositoryUseCase = starredRepositoryUseCase
     }
 }
 
@@ -69,7 +61,7 @@ extension RepositorySearchViewModel: RepositorySearchViewModelInterface {
     
     func didSelectRowAt(at indexPath: IndexPath) {
         let repo = repositories[indexPath.row]
-        repoSearchCoordinator?.showRepositoryDetailsView(fullName: repo.fullName)
+        coordinator?.showRepositoryDetailsView(fullName: repo.fullName)
     }
     
     func searchRepositories(name: String) {
@@ -79,7 +71,7 @@ extension RepositorySearchViewModel: RepositorySearchViewModelInterface {
                     self?.repositoriesDidLoad(repositories: repositories)
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.repoSearchCoordinator?.showAlert(title: "Something went wrong", text: error.localizedDescription)
+                    self?.coordinator?.showAlert(title: "Something went wrong", text: error.localizedDescription)
                     self?.returnValuesInPreviousState()
                 }
             }

@@ -11,6 +11,9 @@
 		A980A96727FEEA2C00A283A9 /* StarredRepositoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A980A96627FEEA2C00A283A9 /* StarredRepositoryCoordinator.swift */; };
 		A980A96927FEF71200A283A9 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A980A96827FEF71200A283A9 /* MainTabBarController.swift */; };
 		A980A96B27FEFA2F00A283A9 /* StarredRepositoryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A980A96A27FEFA2F00A283A9 /* StarredRepositoryUseCase.swift */; };
+		A9CC1B1E27FF126E0002CB7E /* StarredRepositoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CC1B1D27FF126E0002CB7E /* StarredRepositoryViewController.swift */; };
+		A9CC1B2027FF12790002CB7E /* StarredRepository.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CC1B1F27FF12790002CB7E /* StarredRepository.storyboard */; };
+		A9CC1B2227FF12820002CB7E /* StarredRepositoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CC1B2127FF12820002CB7E /* StarredRepositoryViewModel.swift */; };
 		A9E0712427FCC38500CA7FE8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E0712327FCC38500CA7FE8 /* AppDelegate.swift */; };
 		A9E0712627FCC38500CA7FE8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E0712527FCC38500CA7FE8 /* SceneDelegate.swift */; };
 		A9E0712D27FCC38700CA7FE8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9E0712C27FCC38700CA7FE8 /* Assets.xcassets */; };
@@ -36,6 +39,9 @@
 		A980A96627FEEA2C00A283A9 /* StarredRepositoryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredRepositoryCoordinator.swift; sourceTree = "<group>"; };
 		A980A96827FEF71200A283A9 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		A980A96A27FEFA2F00A283A9 /* StarredRepositoryUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredRepositoryUseCase.swift; sourceTree = "<group>"; };
+		A9CC1B1D27FF126E0002CB7E /* StarredRepositoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredRepositoryViewController.swift; sourceTree = "<group>"; };
+		A9CC1B1F27FF12790002CB7E /* StarredRepository.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = StarredRepository.storyboard; sourceTree = "<group>"; };
+		A9CC1B2127FF12820002CB7E /* StarredRepositoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredRepositoryViewModel.swift; sourceTree = "<group>"; };
 		A9E0712027FCC38500CA7FE8 /* RepositoryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepositoryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9E0712327FCC38500CA7FE8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A9E0712527FCC38500CA7FE8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +75,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A9CC1B1C27FF12520002CB7E /* StarredRepository */ = {
+			isa = PBXGroup;
+			children = (
+				A9CC1B1F27FF12790002CB7E /* StarredRepository.storyboard */,
+				A9CC1B1D27FF126E0002CB7E /* StarredRepositoryViewController.swift */,
+				A9CC1B2127FF12820002CB7E /* StarredRepositoryViewModel.swift */,
+			);
+			path = StarredRepository;
+			sourceTree = "<group>";
+		};
+		A9CC1B2327FF13200002CB7E /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				A9E0715627FD6F0E00CA7FE8 /* RepositoryTableViewCell */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
 		A9E0711727FCC38500CA7FE8 = {
 			isa = PBXGroup;
 			children = (
@@ -133,7 +157,9 @@
 		A9E0713E27FCC72B00CA7FE8 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				A9CC1B2327FF13200002CB7E /* Reusable */,
 				A9E0713F27FCC73000CA7FE8 /* RepositorySearch */,
+				A9CC1B1C27FF12520002CB7E /* StarredRepository */,
 				A9E0715B27FDDDC300CA7FE8 /* RepositoryDetails */,
 			);
 			path = Screens;
@@ -142,7 +168,6 @@
 		A9E0713F27FCC73000CA7FE8 /* RepositorySearch */ = {
 			isa = PBXGroup;
 			children = (
-				A9E0715627FD6F0E00CA7FE8 /* RepositoryTableViewCell */,
 				A9E0714627FCC7E400CA7FE8 /* RepositorySearch.storyboard */,
 				A9E0714227FCC78800CA7FE8 /* RepositorySearchViewController.swift */,
 				A9E0714827FCC7FC00CA7FE8 /* RepositorySearchViewModel.swift */,
@@ -257,6 +282,7 @@
 				A9E0715F27FDDDFC00CA7FE8 /* RepositoryDetails.storyboard in Resources */,
 				A9E0713027FCC38700CA7FE8 /* LaunchScreen.storyboard in Resources */,
 				A9E0712D27FCC38700CA7FE8 /* Assets.xcassets in Resources */,
+				A9CC1B2027FF12790002CB7E /* StarredRepository.storyboard in Resources */,
 				A9E0715A27FD6F2900CA7FE8 /* RepositoryTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9CC1B1E27FF126E0002CB7E /* StarredRepositoryViewController.swift in Sources */,
 				A9E0713B27FCC51B00CA7FE8 /* MainCoordinator.swift in Sources */,
 				A9E0713D27FCC64700CA7FE8 /* RepositorySearchCoordinator.swift in Sources */,
 				A9E0714927FCC7FC00CA7FE8 /* RepositorySearchViewModel.swift in Sources */,
@@ -281,6 +308,7 @@
 				A9E0716127FDDE0A00CA7FE8 /* RepositoryDetailsViewModel.swift in Sources */,
 				A980A96927FEF71200A283A9 /* MainTabBarController.swift in Sources */,
 				A9E0715527FD6A8C00CA7FE8 /* String+Extensions.swift in Sources */,
+				A9CC1B2227FF12820002CB7E /* StarredRepositoryViewModel.swift in Sources */,
 				A9E0712427FCC38500CA7FE8 /* AppDelegate.swift in Sources */,
 				A9E0714C27FCCE1600CA7FE8 /* RepositorySearchUseCase.swift in Sources */,
 				A9E0712627FCC38500CA7FE8 /* SceneDelegate.swift in Sources */,
