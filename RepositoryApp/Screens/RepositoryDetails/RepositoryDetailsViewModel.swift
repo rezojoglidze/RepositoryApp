@@ -13,6 +13,9 @@ protocol RepositoryDetailsViewModelInterface: AnyObject {
     var coordinator: RepositorySearchCoordinator { get }
     func getRepositoryDetails()
     func openUrl()
+    
+    func checkIfRepoIsAlreadySaved() -> Bool
+    func starBtnTapped(isSelected: Bool)
 }
 
 class RepositoryDetailsViewModel {
@@ -49,6 +52,7 @@ extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
             case .success(let repository):
                 DispatchQueue.main.sync {
                     self?.repository = repository
+                    self?.view?.updateStarBtn()
                     self?.view?.repositoryDetailsDidLoad(repository: repository)
                 }
             case .failure(let error):
@@ -57,5 +61,34 @@ extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
                 }
             }
         }
+    }
+    
+    func checkIfRepoIsAlreadySaved() -> Bool {
+        guard let repository = repository else { return false }
+        let fetchedRepositories = RepositoryEntity.shared.fetchRepositories()
+        
+        return fetchedRepositories.contains(where: {$0.id == repository.id })
+    }
+    
+    private func saveRepository(repo: Repository) {
+        RepositoryEntity.shared.saveObject(repo: repo) {
+            view?.updateStarBtn()
+        } onFailure: { error in
+            coordinator.showAlert(title: "", text: error)
+        }
+    }
+    
+    private func deleteRepository(repo: Repository) {
+        RepositoryEntity.shared.deleteRepository(repo: repo) {
+            view?.updateStarBtn()
+        } onFailure: { error in
+            coordinator.showAlert(title: "", text: error)
+        }
+
+    }
+    
+    func starBtnTapped(isSelected: Bool) {
+        guard let repository = repository else { return }
+        isSelected ? deleteRepository(repo: repository) : saveRepository(repo: repository)
     }
 }

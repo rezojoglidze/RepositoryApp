@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21D62" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="OwnerEntity" representedClassName="OwnerEntity" syncable="YES">
+        <attribute name="avatarUrl" optional="YES" attributeType="String"/>
+        <attribute name="ownerName" optional="YES" attributeType="String"/>
+        <relationship name="repository" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RepositoryEntity" inverseName="owner" inverseEntity="RepositoryEntity"/>
+    </entity>
     <entity name="RepositoryEntity" representedClassName="RepositoryEntity" syncable="YES">
         <attribute name="dateCreated" optional="YES" attributeType="String"/>
         <attribute name="fullName" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="language" optional="YES" attributeType="String"/>
         <attribute name="repoDescription" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="String"/>
+        <relationship name="owner" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OwnerEntity" inverseName="repository" inverseEntity="OwnerEntity"/>
     </entity>
     <elements>
-        <element name="RepositoryEntity" positionX="-54" positionY="-9" width="128" height="104"/>
+        <element name="RepositoryEntity" positionX="-54" positionY="-9" width="128" height="134"/>
+        <element name="OwnerEntity" positionX="-36" positionY="45" width="128" height="74"/>
     </elements>
 </model>

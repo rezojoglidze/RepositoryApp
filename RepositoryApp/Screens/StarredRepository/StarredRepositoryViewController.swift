@@ -31,7 +31,11 @@ class StarredRepositoryViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupTableView()
-//        viewModel.fetchRepositories()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchRepositories()
     }
 
     //MARK: Functions
@@ -49,7 +53,7 @@ class StarredRepositoryViewController: UIViewController {
 //MARK: RepositorySearchViewInterface
 extension StarredRepositoryViewController: StarredRepositoryViewInterface {
     func repositoriesDidLoad() {
-      
+        self.tableView.reloadData()
     }
 }
 

@@ -9,6 +9,7 @@ import UIKit
 
 protocol RepositoryDetailsViewInterface: AnyObject {
     func repositoryDetailsDidLoad(repository: Repository)
+    func updateStarBtn()
 }
 
 class RepositoryDetailsViewController: UIViewController {
@@ -33,6 +34,12 @@ class RepositoryDetailsViewController: UIViewController {
         super.viewDidLoad()
         viewModel.getRepositoryDetails()
     }
+   
+    @objc func starBtnTapped(sender: UIBarButtonItem) {
+        if let starBtn = navigationItem.rightBarButtonItem {
+            viewModel.starBtnTapped(isSelected: starBtn.isSelected)
+        }
+    }
     
     //MARK: Functions
     private func updateView(with repository: Repository) {
@@ -50,6 +57,13 @@ class RepositoryDetailsViewController: UIViewController {
 
 //MARK: RepositoryDetailsViewInterface
 extension RepositoryDetailsViewController: RepositoryDetailsViewInterface {
+    func updateStarBtn() {
+        let isSelected = viewModel.checkIfRepoIsAlreadySaved()
+        let image = isSelected ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(starBtnTapped))
+        self.navigationItem.rightBarButtonItem?.isSelected = isSelected
+    }
+    
     func repositoryDetailsDidLoad(repository: Repository) {
         updateView(with: repository)
     }

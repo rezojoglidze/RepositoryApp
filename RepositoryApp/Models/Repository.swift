@@ -8,6 +8,7 @@
 import Foundation
 
 struct Repository: Codable {
+    let id: Int64
     let fullName: String
     let owner: Owner
     let dateCreated: String
@@ -16,6 +17,7 @@ struct Repository: Codable {
     let url: String
     
     enum CodingKeys: String, CodingKey {
+        case id
         case fullName = "full_name"
         case owner
         case dateCreated = "updated_at"

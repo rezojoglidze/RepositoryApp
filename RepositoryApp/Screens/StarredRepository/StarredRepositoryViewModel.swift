@@ -25,9 +25,7 @@ class StarredRepositoryViewModel {
     private var starredRepositoryUseCase: StarredRepositoryUseCase
     
     private var repositories: [RepositoryEntity] = []
-    
-    lazy var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
+        
     //MARK: Repository Search View Init
     
     init(view: StarredRepositoryViewInterface,
@@ -36,7 +34,6 @@ class StarredRepositoryViewModel {
         self.view = view
         self.coordinator = coordinator
         self.starredRepositoryUseCase = starredRepositoryUseCase
-        saveObject()
     }
 }
 
@@ -51,36 +48,7 @@ extension StarredRepositoryViewModel: StarredRepositoryViewModelInterface {
     }
     
     func fetchRepositories() {
-        do {
-            print("Started")
-            self.repositories = try self.context.fetch(RepositoryEntity.fetchRequest()) as! [RepositoryEntity]
-            print("Endd mgoni")
-            DispatchQueue.main.async {
-                self.view?.repositoriesDidLoad()
-            }
-        } catch(let error) {
-            print("errr: ", error.localizedDescription)
-        }
-    }
-    
-    private func saveObject() {
-        //create repo obj
-        let repo = RepositoryEntity(context: self.context)
-        repo.fullName = "Rezo jogg"
-        repo.dateCreated = "gushin"
-        repo.url = "ruurrr"
-        repo.language = "ENG"
-        repo.repoDescription = "Descc ra"
-         
-        
-        //Save the data
-        do {
-            try context.save()
-        } catch(let error) {
-            print(error.localizedDescription)
-        }
-        
-        //Re-Fetch Data
-        self.fetchRepositories()
+        self.repositories = RepositoryEntity.shared.fetchRepositories()
+        view?.repositoriesDidLoad()
     }
 }
