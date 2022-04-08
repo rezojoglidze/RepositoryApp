@@ -36,7 +36,7 @@ class RepositoryDetailsViewController: UIViewController {
     
     //MARK: Functions
     private func updateView(with repository: Repository) {
-        descriptionLabel.text = repository.description
+        descriptionLabel.text = repository.repoDescription
         languageLabel.text = repository.language
         dateCreatedLabel.text = repository.dateCreated
         openUrlByBrowserBtn.setTitle("Open Url".uppercased(), for: .normal)

@@ -12,7 +12,7 @@ struct Repository: Codable {
     let owner: Owner
     let dateCreated: String
     let language: String?
-    let description: String?
+    let repoDescription: String?
     let url: String
     
     enum CodingKeys: String, CodingKey {
@@ -20,7 +20,7 @@ struct Repository: Codable {
         case owner
         case dateCreated = "updated_at"
         case language = "language"
-        case description = "description"
+        case repoDescription = "description"
         case url = "html_url"
     }
 }

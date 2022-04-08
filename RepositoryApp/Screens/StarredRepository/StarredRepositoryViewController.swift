@@ -7,10 +7,9 @@
 
 import UIKit
 
-
 //MARK: RepositorySearchViewInterface
 protocol StarredRepositoryViewInterface: AnyObject {
-    func repositoriesDidLoad(repositories: [Repository])
+    func repositoriesDidLoad()
 }
 
 class StarredRepositoryViewController: UIViewController {
@@ -32,6 +31,7 @@ class StarredRepositoryViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupTableView()
+//        viewModel.fetchRepositories()
     }
 
     //MARK: Functions
@@ -48,7 +48,7 @@ class StarredRepositoryViewController: UIViewController {
 
 //MARK: RepositorySearchViewInterface
 extension StarredRepositoryViewController: StarredRepositoryViewInterface {
-    func repositoriesDidLoad(repositories: [Repository]) {
+    func repositoriesDidLoad() {
       
     }
 }
@@ -61,7 +61,7 @@ extension StarredRepositoryViewController: UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RepositoryTableViewCell.self)) as? RepositoryTableViewCell
         let repo = viewModel.getRepository(with: indexPath)
-        cell?.fill(username: repo.owner.ownerName, repositoryName: repo.fullName, imageUrl: repo.owner.avatarUrl)
+        cell?.fill(username: "repo.owner.ownerName", repositoryName: repo.fullName ?? "", imageUrl: "repo.owner.avatarUrl")
         return cell ?? UITableViewCell()
     }
 }
