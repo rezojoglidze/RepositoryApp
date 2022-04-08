@@ -15,6 +15,7 @@ protocol StarredRepositoryViewModelInterface: AnyObject {
     func fetchRepositories()
     func numberOfRowsInSection() -> Int
     func getRepository(with indexPath: IndexPath) -> RepositoryEntity
+    func didSelectRowAt(at indexPath: IndexPath)
 }
 
 class StarredRepositoryViewModel {
@@ -50,5 +51,11 @@ extension StarredRepositoryViewModel: StarredRepositoryViewModelInterface {
     func fetchRepositories() {
         self.repositories = RepositoryEntity.fetchRepositories()
         view?.repositoriesDidLoad()
+    }
+    
+    func didSelectRowAt(at indexPath: IndexPath) {
+        if let ownerFullName = repositories[indexPath.row].fullName {
+            coordinator.showRepositoryDetailsView(fullName: ownerFullName)
+        }
     }
 }

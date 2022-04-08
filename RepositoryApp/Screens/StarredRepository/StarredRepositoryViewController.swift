@@ -65,7 +65,11 @@ extension StarredRepositoryViewController: UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RepositoryTableViewCell.self)) as? RepositoryTableViewCell
         let repo = viewModel.getRepository(with: indexPath)
-        cell?.fill(username: "repo.owner.ownerName", repositoryName: repo.fullName ?? "", imageUrl: "repo.owner.avatarUrl")
+        cell?.fill(username: repo.owner?.ownerName ?? "", repositoryName: repo.fullName ?? "", imageUrl: repo.owner?.avatarUrl ?? "")
         return cell ?? UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.didSelectRowAt(at: indexPath)
     }
 }

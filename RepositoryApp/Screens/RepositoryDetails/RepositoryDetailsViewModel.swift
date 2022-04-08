@@ -10,7 +10,7 @@ import UIKit
 
 //MARK: RepositorySearchViewModelInterface
 protocol RepositoryDetailsViewModelInterface: AnyObject {
-    var coordinator: RepositorySearchCoordinator { get }
+    var coordinator: RepositoryDetailsCoordinator { get }
     func getRepositoryDetails()
     func openUrl()
     
@@ -22,7 +22,7 @@ class RepositoryDetailsViewModel {
     
     //MARK: Variables
     weak var view: RepositoryDetailsViewInterface?
-    var coordinator: RepositorySearchCoordinator
+    var coordinator: RepositoryDetailsCoordinator
     private var repoOwnerFullName: String
     private var repositoryDetailsUseCase: RepositoryDetailsUseCase
     private var repository: Repository?
@@ -30,7 +30,7 @@ class RepositoryDetailsViewModel {
     
     //MARK: Init
     init(view: RepositoryDetailsViewInterface,
-         coordinator: RepositorySearchCoordinator,
+         coordinator: RepositoryDetailsCoordinator,
          repoOwnerFullName: String,
          repositoryDetailsUseCase: RepositoryDetailsUseCase) {
         self.view = view

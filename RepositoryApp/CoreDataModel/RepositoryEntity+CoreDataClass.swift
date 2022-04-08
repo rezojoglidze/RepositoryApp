@@ -45,7 +45,8 @@ extension RepositoryEntity: RepositoryEntityProtocol {
         ownerEntity.ownerName = repo.owner.ownerName
         ownerEntity.avatarUrl = repo.owner.avatarUrl
 
-        repoEntity.addToOwner(ownerEntity)
+        repoEntity.owner = ownerEntity
+//        repoEntity.addToOwner(ownerEntity)
         
 //        Save the data
         do {

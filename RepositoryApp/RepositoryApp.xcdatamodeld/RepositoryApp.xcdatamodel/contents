@@ -12,10 +12,10 @@
         <attribute name="language" optional="YES" attributeType="String"/>
         <attribute name="repoDescription" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="String"/>
-        <relationship name="owner" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="OwnerEntity" inverseName="repository" inverseEntity="OwnerEntity"/>
+        <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="OwnerEntity" inverseName="repository" inverseEntity="OwnerEntity"/>
     </entity>
     <elements>
-        <element name="RepositoryEntity" positionX="-54" positionY="-9" width="128" height="134"/>
         <element name="OwnerEntity" positionX="-36" positionY="45" width="128" height="74"/>
+        <element name="RepositoryEntity" positionX="-54" positionY="-9" width="128" height="134"/>
     </elements>
 </model>
