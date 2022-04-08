@@ -48,7 +48,7 @@ extension StarredRepositoryViewModel: StarredRepositoryViewModelInterface {
     }
     
     func fetchRepositories() {
-        self.repositories = RepositoryEntity.shared.fetchRepositories()
+        self.repositories = RepositoryEntity.fetchRepositories()
         view?.repositoriesDidLoad()
     }
 }

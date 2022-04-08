@@ -65,13 +65,13 @@ extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
     
     func checkIfRepoIsAlreadySaved() -> Bool {
         guard let repository = repository else { return false }
-        let fetchedRepositories = RepositoryEntity.shared.fetchRepositories()
+        let fetchedRepositories = RepositoryEntity.fetchRepositories()
         
         return fetchedRepositories.contains(where: {$0.id == repository.id })
     }
     
     private func saveRepository(repo: Repository) {
-        RepositoryEntity.shared.saveObject(repo: repo) {
+        RepositoryEntity.saveObject(repo: repo) {
             view?.updateStarBtn()
         } onFailure: { error in
             coordinator.showAlert(title: "", text: error)
@@ -79,7 +79,7 @@ extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
     }
     
     private func deleteRepository(repo: Repository) {
-        RepositoryEntity.shared.deleteRepository(repo: repo) {
+        RepositoryEntity.deleteRepository(repo: repo) {
             view?.updateStarBtn()
         } onFailure: { error in
             coordinator.showAlert(title: "", text: error)

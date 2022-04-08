@@ -11,20 +11,18 @@ import CoreData
 import UIKit
 
 protocol RepositoryEntityProtocol {
-    func fetchRepositories() -> [RepositoryEntity]
-    func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void)
-    func deleteRepository(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void)
+    static func fetchRepositories() -> [RepositoryEntity]
+    static func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void)
+    static func deleteRepository(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void)
 }
 
 @objc(RepositoryEntity)
 public class RepositoryEntity: NSManagedObject {
-    private lazy var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-    static let shared: RepositoryEntityProtocol = RepositoryEntity(context: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    static var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 }
 
 extension RepositoryEntity: RepositoryEntityProtocol {
-    func fetchRepositories() -> [RepositoryEntity] {
+   static func fetchRepositories() -> [RepositoryEntity] {
         do {
             return try context.fetch(RepositoryEntity.fetchRequest())
         } catch(let error) {
@@ -33,7 +31,7 @@ extension RepositoryEntity: RepositoryEntityProtocol {
         return []
     }
     
-    func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
+    static func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
 //        create repo obj
         let repoEntity = RepositoryEntity(context: self.context)
         repoEntity.fullName = repo.fullName
@@ -59,7 +57,7 @@ extension RepositoryEntity: RepositoryEntityProtocol {
         }
     }
     
-    func deleteRepository(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
+    static func deleteRepository(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
        
         let repositories = fetchRepositories()
         guard let deletableRepo = repositories.first(where: {$0.id == repo.id}) else { return }

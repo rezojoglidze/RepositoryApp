@@ -33,8 +33,7 @@ class RepositorySearchViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupTableView()
-        
-        searchRepositories(name: "Gg")
+//        searchRepositories(name: "Gg")
     }
 
     //MARK: Functions
