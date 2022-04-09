@@ -33,11 +33,15 @@ class RepositorySearchViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupTableView()
+        setupSearchController()
     }
 
     //MARK: Functions
     private func setupView() {
         title = "Repositories"
+    }
+    
+    private func setupSearchController() {
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
     }
@@ -46,10 +50,6 @@ class RepositorySearchViewController: UIViewController {
         tableView.register(UINib(nibName: String(describing: RepositoryTableViewCell.self), bundle: nil), forCellReuseIdentifier: String(describing: RepositoryTableViewCell.self))
         tableView.dataSource = self
         tableView.delegate = self
-    }
-    
-    private func searchRepositories(name: String) {
-        viewModel.searchRepositories(name: name)
     }
 }
 
@@ -70,7 +70,8 @@ extension RepositorySearchViewController: RepositorySearchViewInterface {
     }
 }
 
-extension RepositorySearchViewController: UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
+//MARK: UITableViewDataSource & UITableViewDelegate
+extension RepositorySearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRowsInSection()
     }
@@ -85,7 +86,10 @@ extension RepositorySearchViewController: UITableViewDataSource, UITableViewDele
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelectRowAt(at: indexPath)
     }
-    
+}
+
+//MARK: UIScrollViewDelegate
+extension RepositorySearchViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if tableView.contentOffset.y > tableView.contentSize.height - tableView.frame.size.height
             && !viewModel.isPaginationInProcess && !viewModel.isReachedMaxPagingIndex {
@@ -94,7 +98,7 @@ extension RepositorySearchViewController: UITableViewDataSource, UITableViewDele
                 if !text.isEmpty {
                     self.tableView.tableFooterView = createSpinnerFooter()
                     viewModel.isPaginationInProcess = true
-                    searchRepositories(name: text)
+                    viewModel.searchRepositories(name: text)
                 }
             }
         }
@@ -114,7 +118,7 @@ extension RepositorySearchViewController: UITableViewDataSource, UITableViewDele
 extension RepositorySearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let text = searchController.searchBar.text?.removeWhitespace().lowercased() {
-            searchRepositories(name: text)
+            viewModel.searchRepositories(name: text)
         }
     }
     

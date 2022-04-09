@@ -28,9 +28,6 @@ class RepositorySearchViewModel {
     weak var view: RepositorySearchViewInterface?
     var coordinator: RepositorySearchCoordinator?
     private var repositorySearchUseCase: RepositorySearchUseCase?
-
-    var starredRepoCoordinator: StarredRepositoryCoordinator?
-    private var starredRepositoryUseCase: StarredRepositoryUseCase?
     
     var isRepositoryUsernameChanged = false
     var isPaginationInProcess = false

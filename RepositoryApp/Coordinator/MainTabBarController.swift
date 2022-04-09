@@ -9,8 +9,8 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
     
-    let repoSearch = RepositorySearchCoordinator(navigationController: UINavigationController())
-    let starredRepo = StarredRepositoryCoordinator(navigationController: UINavigationController())
+    private let repoSearch = RepositorySearchCoordinator(navigationController: UINavigationController())
+    private let starredRepo = StarredRepositoryCoordinator(navigationController: UINavigationController())
     
     override func viewDidLoad() {
         super.viewDidLoad()
