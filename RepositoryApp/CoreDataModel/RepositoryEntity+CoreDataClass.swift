@@ -32,7 +32,7 @@ extension RepositoryEntity: RepositoryEntityProtocol {
     }
     
     static func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
-//        create repo obj
+
         let repoEntity = RepositoryEntity(context: self.context)
         repoEntity.fullName = repo.fullName
         repoEntity.dateCreated = repo.dateCreated
@@ -46,9 +46,7 @@ extension RepositoryEntity: RepositoryEntityProtocol {
         ownerEntity.avatarUrl = repo.owner.avatarUrl
 
         repoEntity.owner = ownerEntity
-//        repoEntity.addToOwner(ownerEntity)
         
-//        Save the data
         do {
             try context.save()
             onSuccess()
@@ -72,6 +70,5 @@ extension RepositoryEntity: RepositoryEntityProtocol {
             onFailure("Something Happens. try again later.")
             print(error.localizedDescription)
         }
-        
     }
 }

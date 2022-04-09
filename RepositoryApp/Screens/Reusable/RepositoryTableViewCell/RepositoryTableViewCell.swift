@@ -18,7 +18,6 @@ class RepositoryTableViewCell: UITableViewCell {
         self.repositoryName.text = repositoryName
         self.avatarImg.contentMode = .scaleToFill
         getImage(imageUrl: imageUrl)
-        imageUrl.getImage(with: <#T##String#>)
     }
     
     private func getImage(imageUrl: String) {
@@ -26,7 +25,7 @@ class RepositoryTableViewCell: UITableViewCell {
             guard let url = URL(string: imageUrl) else { return }
             if let data = try? Data(contentsOf: url) {
                 DispatchQueue.main.async {
-                    self?.avatarImg.image  = UIImage
+                    self?.avatarImg.image = UIImage(data: data)
                 }
             }
         }
