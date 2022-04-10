@@ -7,11 +7,6 @@
 
 import UIKit
 
-//MARK: RepositorySearchViewInterface
-protocol RepositorySearchViewInterface: AnyObject {
-    func repositoriesDidLoad(repositories: [Repository])
-}
-
 class RepositorySearchViewController: UIViewController {
     
     //MARK: @IBOutlet
@@ -34,11 +29,28 @@ class RepositorySearchViewController: UIViewController {
         setupView()
         setupTableView()
         setupSearchController()
+        setupObservers()
     }
 
     //MARK: Functions
     private func setupView() {
         title = "Repositories"
+    }
+    
+    private func setupObservers() {
+        viewModel.repositoriesLoaded = { [weak self] repositories in
+            if self?.viewModel.isRepositoryUsernameChanged == true {
+                self?.tableView.reloadData()
+                return
+            }
+            
+            if repositories.isEmpty {
+                self?.tableView.tableFooterView = nil
+            } else {
+                self?.tableView.reloadData()
+                self?.tableView.tableFooterView = nil
+            }
+        }
     }
     
     private func setupSearchController() {
@@ -50,23 +62,6 @@ class RepositorySearchViewController: UIViewController {
         tableView.register(UINib(nibName: String(describing: RepositoryTableViewCell.self), bundle: nil), forCellReuseIdentifier: String(describing: RepositoryTableViewCell.self))
         tableView.dataSource = self
         tableView.delegate = self
-    }
-}
-
-//MARK: RepositorySearchViewInterface
-extension RepositorySearchViewController: RepositorySearchViewInterface {
-    func repositoriesDidLoad(repositories: [Repository]) {
-        if viewModel.isRepositoryUsernameChanged {
-            tableView.reloadData()
-            return
-        }
-        
-        if repositories.isEmpty {
-            self.tableView.tableFooterView = nil
-        } else {
-            tableView.reloadData()
-            self.tableView.tableFooterView = nil
-        }
     }
 }
 

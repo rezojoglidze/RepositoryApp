@@ -20,12 +20,13 @@ protocol RepositorySearchViewModelInterface: AnyObject {
     func numberOfRowsInSection() -> Int
     func getRepository(with indexPath: IndexPath) -> Repository
     func didSelectRowAt(at indexPath: IndexPath)
+    
+    var repositoriesLoaded: ((_ repositories: [Repository]) -> Void)? { get set }
 }
 
 class RepositorySearchViewModel {
     
     //MARK: Variables
-    weak var view: RepositorySearchViewInterface?
     var coordinator: RepositorySearchCoordinator?
     private var repositorySearchUseCase: RepositorySearchUseCase?
     
@@ -34,12 +35,12 @@ class RepositorySearchViewModel {
     var isReachedMaxPagingIndex = false
 
     private var repositories: [Repository] = []
+    
+    var repositoriesLoaded: ((_ repositories: [Repository]) -> Void)?
 
     //MARK: Repository Search View Init
-    init(view: RepositorySearchViewInterface,
-         coordinator: RepositorySearchCoordinator,
+    init(coordinator: RepositorySearchCoordinator,
          repositorySearchUseCase: RepositorySearchUseCase) {
-        self.view = view
         self.coordinator = coordinator
         self.repositorySearchUseCase = repositorySearchUseCase
     }
@@ -80,7 +81,7 @@ extension RepositorySearchViewModel: RepositorySearchViewModelInterface {
             self.repositories = repositories
             isRepositoryUsernameChanged = false
             DispatchQueue.main.async {
-                self.view?.repositoriesDidLoad(repositories: repositories)
+                self.repositoriesLoaded?(repositories)
             }
             return
         }
@@ -92,7 +93,7 @@ extension RepositorySearchViewModel: RepositorySearchViewModelInterface {
         }
         isPaginationInProcess = false
         DispatchQueue.main.async {
-            self.view?.repositoriesDidLoad(repositories: repositories)
+            self.repositoriesLoaded?(repositories)
         }
     }
     

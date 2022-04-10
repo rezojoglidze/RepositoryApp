@@ -16,23 +16,24 @@ protocol StarredRepositoryViewModelInterface: AnyObject {
     func numberOfRowsInSection() -> Int
     func getRepository(with indexPath: IndexPath) -> RepositoryEntity
     func didSelectRowAt(at indexPath: IndexPath)
+    
+    var repositoriesLoaded: (() -> Void)? { get set }
 }
 
 class StarredRepositoryViewModel {
     
     //MARK: Variables
-    weak var view: StarredRepositoryViewInterface?
     var coordinator: StarredRepositoryCoordinator
     private var starredRepositoryUseCase: StarredRepositoryUseCase
     
     private var repositories: [RepositoryEntity] = []
-        
+
+    var repositoriesLoaded: (() -> Void)?
+
     //MARK: Repository Search View Init
     
-    init(view: StarredRepositoryViewInterface,
-         coordinator: StarredRepositoryCoordinator,
+    init(coordinator: StarredRepositoryCoordinator,
          starredRepositoryUseCase: StarredRepositoryUseCase) {
-        self.view = view
         self.coordinator = coordinator
         self.starredRepositoryUseCase = starredRepositoryUseCase
     }
@@ -50,7 +51,7 @@ extension StarredRepositoryViewModel: StarredRepositoryViewModelInterface {
     
     func fetchRepositories() {
         self.repositories = RepositoryEntity.fetchRepositories()
-        view?.repositoriesDidLoad()
+        repositoriesLoaded?()
     }
     
     func didSelectRowAt(at indexPath: IndexPath) {

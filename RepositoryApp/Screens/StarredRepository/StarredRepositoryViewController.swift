@@ -7,11 +7,6 @@
 
 import UIKit
 
-//MARK: RepositorySearchViewInterface
-protocol StarredRepositoryViewInterface: AnyObject {
-    func repositoriesDidLoad()
-}
-
 class StarredRepositoryViewController: UIViewController {
     
     //MARK: @IBOutlet
@@ -31,6 +26,7 @@ class StarredRepositoryViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupTableView()
+        setupObservers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +39,12 @@ class StarredRepositoryViewController: UIViewController {
         title = "Saved Repositories"
     }
     
+    private func setupObservers() {
+        viewModel.repositoriesLoaded = { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+    
     private func setupTableView() {
         tableView.register(UINib(nibName: String(describing: RepositoryTableViewCell.self), bundle: nil), forCellReuseIdentifier: String(describing: RepositoryTableViewCell.self))
         tableView.dataSource = self
@@ -50,13 +52,7 @@ class StarredRepositoryViewController: UIViewController {
     }
 }
 
-//MARK: RepositorySearchViewInterface
-extension StarredRepositoryViewController: StarredRepositoryViewInterface {
-    func repositoriesDidLoad() {
-        self.tableView.reloadData()
-    }
-}
-
+//MARK: UITableViewDataSource & UITableViewDelegate 
 extension StarredRepositoryViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRowsInSection()

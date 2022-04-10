@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol RepositoryDetailsViewInterface: AnyObject {
-    func repositoryDetailsDidLoad(repository: Repository)
-    func updateStarBtn()
-}
-
 class RepositoryDetailsViewController: UIViewController {
     
     //MARK: IBOutlet
@@ -33,6 +28,7 @@ class RepositoryDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.getRepositoryDetails()
+        setupObservers()
     }
    
     @objc func starBtnTapped(sender: UIBarButtonItem) {
@@ -42,6 +38,24 @@ class RepositoryDetailsViewController: UIViewController {
     }
     
     //MARK: Functions
+    
+    private func setupObservers() {
+        viewModel.repositoryDetailsDidLoad = { [weak self] repository in
+            self?.updateView(with: repository)
+        }
+        
+        viewModel.updateStarBtn = { [weak self] in
+            self?.updateStarBtn()
+        }
+    }
+    
+    private func updateStarBtn() {
+        let isSelected = viewModel.checkIfRepoIsAlreadySaved()
+        let image = isSelected ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(starBtnTapped))
+        self.navigationItem.rightBarButtonItem?.isSelected = isSelected
+    }
+    
     private func updateView(with repository: Repository) {
         descriptionLabel.text = repository.repoDescription
         languageLabel.text = repository.language
@@ -52,19 +66,5 @@ class RepositoryDetailsViewController: UIViewController {
     //MARK: IBAction
     @IBAction func openUrlByBrowserBtnDidTap(_ sender: Any) {
         viewModel.openUrl()
-    }
-}
-
-//MARK: RepositoryDetailsViewInterface
-extension RepositoryDetailsViewController: RepositoryDetailsViewInterface {
-    func updateStarBtn() {
-        let isSelected = viewModel.checkIfRepoIsAlreadySaved()
-        let image = isSelected ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(starBtnTapped))
-        self.navigationItem.rightBarButtonItem?.isSelected = isSelected
-    }
-    
-    func repositoryDetailsDidLoad(repository: Repository) {
-        updateView(with: repository)
     }
 }

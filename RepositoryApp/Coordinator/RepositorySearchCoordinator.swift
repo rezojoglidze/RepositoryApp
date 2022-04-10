@@ -25,7 +25,7 @@ class RepositorySearchCoordinator: NSObject, Coordinator, UINavigationController
     func showRepositorySearchView() {
         let viewController = RepositorySearchViewController.instantiate()
         viewController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-        let viewModel = RepositorySearchViewModel(view: viewController, coordinator: self, repositorySearchUseCase: DefaultRepositorySearchUseCase.shared)
+        let viewModel = RepositorySearchViewModel(coordinator: self, repositorySearchUseCase: DefaultRepositorySearchUseCase.shared)
         viewController.viewModel = viewModel
         navigationController.pushViewController(viewController, animated: false)
     }

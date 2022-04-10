@@ -16,24 +16,28 @@ protocol RepositoryDetailsViewModelInterface: AnyObject {
     
     func checkIfRepoIsAlreadySaved() -> Bool
     func starBtnTapped(isSelected: Bool)
+    
+    var repositoryDetailsDidLoad: ((_ repository: Repository) -> Void)? { get set }
+    var updateStarBtn: (() -> Void)? { get set }
+
 }
 
 class RepositoryDetailsViewModel {
     
     //MARK: Variables
-    weak var view: RepositoryDetailsViewInterface?
     var coordinator: RepositoryDetailsCoordinator
     private var repoOwnerFullName: String
     private var repositoryDetailsUseCase: RepositoryDetailsUseCase
     private var repository: Repository?
     
+    var repositoryDetailsDidLoad: ((_ repository: Repository) -> Void)?
+    var updateStarBtn: (() -> Void)?
+    
     
     //MARK: Init
-    init(view: RepositoryDetailsViewInterface,
-         coordinator: RepositoryDetailsCoordinator,
+    init(coordinator: RepositoryDetailsCoordinator,
          repoOwnerFullName: String,
          repositoryDetailsUseCase: RepositoryDetailsUseCase) {
-        self.view = view
         self.coordinator = coordinator
         self.repoOwnerFullName = repoOwnerFullName
         self.repositoryDetailsUseCase = repositoryDetailsUseCase
@@ -52,8 +56,8 @@ extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
             case .success(let repository):
                 DispatchQueue.main.sync {
                     self?.repository = repository
-                    self?.view?.updateStarBtn()
-                    self?.view?.repositoryDetailsDidLoad(repository: repository)
+                    self?.updateStarBtn?()
+                    self?.repositoryDetailsDidLoad?(repository)
                 }
             case .failure(let error):
                 DispatchQueue.main.sync {
@@ -77,7 +81,7 @@ extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
     
     private func saveRepository(repo: Repository) {
         RepositoryEntity.saveObject(repo: repo) {
-            view?.updateStarBtn()
+            updateStarBtn?()
         } onFailure: { error in
             coordinator.showAlert(title: "", text: error)
         }
@@ -85,7 +89,7 @@ extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
     
     private func deleteRepository(repo: Repository) {
         RepositoryEntity.deleteRepository(repo: repo) {
-            view?.updateStarBtn()
+            updateStarBtn?()
         } onFailure: { error in
             coordinator.showAlert(title: "", text: error)
         }
