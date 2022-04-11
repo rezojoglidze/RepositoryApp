@@ -2,7 +2,7 @@
 //  RepositoryEntity+CoreDataClass.swift
 //  RepositoryApp
 //
-//  Created by Rezo Joglidze on 08.04.22.
+//  Created by Rezo Joglidze on 11.04.22.
 //
 //
 
