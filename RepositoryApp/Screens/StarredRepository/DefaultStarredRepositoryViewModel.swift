@@ -49,7 +49,7 @@ extension DefaultStarredRepositoryViewModel: StarredRepositoryViewModel {
     }
     
     func fetchRepositories() {
-        self.repositories = RepositoryEntity.fetchRepositories()
+        self.repositories = RepositoryEntity().fetchRepositories()
         repositoriesLoaded?()
     }
     

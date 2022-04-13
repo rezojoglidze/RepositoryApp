@@ -69,7 +69,7 @@ extension DefaultRepositoryDetailsViewModel: RepositoryDetailsViewModel {
     
     func updateStarBtnIsSelected() -> Bool {
         guard let repository = repository else { return false }
-        let fetchedRepositories = RepositoryEntity.fetchRepositories()
+        let fetchedRepositories = RepositoryEntity().fetchRepositories()
         
         return fetchedRepositories.contains(where: {$0.id == repository.id })
     }
@@ -80,7 +80,7 @@ extension DefaultRepositoryDetailsViewModel: RepositoryDetailsViewModel {
     }
     
     private func saveRepository(repo: Repository) {
-        RepositoryEntity.saveObject(repo: repo) {
+        RepositoryEntity().saveObject(repo: repo) {
             updateStarBtn?()
         } onFailure: { error in
             coordinator.showAlert(title: "", text: error)
@@ -88,7 +88,7 @@ extension DefaultRepositoryDetailsViewModel: RepositoryDetailsViewModel {
     }
     
     private func deleteRepository(repo: Repository) {
-        RepositoryEntity.deleteRepository(repo: repo) {
+        RepositoryEntity().deleteRepository(repo: repo) {
             updateStarBtn?()
         } onFailure: { error in
             coordinator.showAlert(title: "", text: error)

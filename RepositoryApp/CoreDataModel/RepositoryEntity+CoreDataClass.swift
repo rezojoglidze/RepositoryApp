@@ -11,18 +11,18 @@ import CoreData
 import UIKit
 
 protocol RepositoryEntityProtocol {
-    static func fetchRepositories() -> [RepositoryEntity]
-    static func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void)
-    static func deleteRepository(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void)
+     func fetchRepositories() -> [RepositoryEntity]
+     func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void)
+     func deleteRepository(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void)
 }
 
 @objc(RepositoryEntity)
 public class RepositoryEntity: NSManagedObject {
-    static var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+     var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 }
 
 extension RepositoryEntity: RepositoryEntityProtocol {
-   static func fetchRepositories() -> [RepositoryEntity] {
+    func fetchRepositories() -> [RepositoryEntity] {
         do {
             return try context.fetch(RepositoryEntity.fetchRequest())
         } catch(let error) {
@@ -31,7 +31,7 @@ extension RepositoryEntity: RepositoryEntityProtocol {
         return []
     }
     
-    static func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
+     func saveObject(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
 
         let repoEntity = RepositoryEntity(context: self.context)
         repoEntity.fullName = repo.fullName
@@ -56,7 +56,7 @@ extension RepositoryEntity: RepositoryEntityProtocol {
         }
     }
     
-    static func deleteRepository(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
+     func deleteRepository(repo: Repository, onSuccess: () -> Void, onFailure: (_ error: String) -> Void) {
        
         let repositories = fetchRepositories()
         guard let deletableRepo = repositories.first(where: {$0.id == repo.id}) else { return }
