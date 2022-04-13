@@ -9,8 +9,7 @@ import Foundation
 import UIKit
 
 //MARK: RepositorySearchViewModelInterface
-protocol StarredRepositoryViewModelInterface: AnyObject {
-    var coordinator: StarredRepositoryCoordinator { get }
+protocol StarredRepositoryViewModel: AnyObject {
     
     func fetchRepositories()
     func numberOfRowsInSection() -> Int
@@ -20,10 +19,10 @@ protocol StarredRepositoryViewModelInterface: AnyObject {
     var repositoriesLoaded: (() -> Void)? { get set }
 }
 
-class StarredRepositoryViewModel {
+class DefaultStarredRepositoryViewModel {
     
     //MARK: Variables
-    var coordinator: StarredRepositoryCoordinator
+    private var coordinator: StarredRepositoryCoordinator
     private var starredRepositoryUseCase: StarredRepositoryUseCase
     
     private var repositories: [RepositoryEntity] = []
@@ -40,7 +39,7 @@ class StarredRepositoryViewModel {
 }
 
 //MARK: RepositorySearchViewModelInterface
-extension StarredRepositoryViewModel: StarredRepositoryViewModelInterface {
+extension DefaultStarredRepositoryViewModel: StarredRepositoryViewModel {
     func numberOfRowsInSection() -> Int {
         repositories.count
     }

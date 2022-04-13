@@ -33,7 +33,7 @@ class RepositoryDetailsCoordinator: Coordinator {
     
     func showRepositoryDetailsView() {
         let viewController = RepositoryDetailsViewController.instantiate()
-        let viewModel = RepositoryDetailsViewModel(coordinator: self, repoOwnerFullName: fullName, repositoryDetailsUseCase: DefaultRepositoryDetailsUseCase.shared)
+        let viewModel = DefaultRepositoryDetailsViewModel(coordinator: self, repoOwnerFullName: fullName, repositoryDetailsUseCase: DefaultRepositoryDetailsUseCase.shared)
         viewController.viewModel = viewModel
         navigationController.pushViewController(viewController, animated: true)
     }

@@ -16,7 +16,7 @@ class RepositoryDetailsViewController: UIViewController {
     @IBOutlet private weak var openUrlByBrowserBtn: UIButton!
     
     //MARK: Variables
-    var viewModel: RepositoryDetailsViewModelInterface!
+    var viewModel: RepositoryDetailsViewModel!
     
     static func instantiate() -> RepositoryDetailsViewController {
         let storyBoard = UIStoryboard(name: "RepositoryDetails", bundle: nil)
@@ -50,7 +50,7 @@ class RepositoryDetailsViewController: UIViewController {
     }
     
     private func updateStarBtn() {
-        let isSelected = viewModel.checkIfRepoIsAlreadySaved()
+        let isSelected = viewModel.updateStarBtnIsSelected()
         let image = isSelected ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(starBtnTapped))
         self.navigationItem.rightBarButtonItem?.isSelected = isSelected

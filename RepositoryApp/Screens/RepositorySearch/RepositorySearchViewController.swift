@@ -15,7 +15,7 @@ class RepositorySearchViewController: UIViewController {
     //MARK: Variables
     private let searchController = UISearchController()
 
-    var viewModel: RepositorySearchViewModelInterface!
+    var viewModel: RepositorySearchViewModel!
 
     static func instantiate() -> RepositorySearchViewController {
         let storyBoard = UIStoryboard(name: "RepositorySearch", bundle: nil)

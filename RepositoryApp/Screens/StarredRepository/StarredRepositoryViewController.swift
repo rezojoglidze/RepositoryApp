@@ -13,7 +13,7 @@ class StarredRepositoryViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     //MARK: Variables
-    var viewModel: StarredRepositoryViewModelInterface!
+    var viewModel: StarredRepositoryViewModel!
 
     static func instantiate() -> StarredRepositoryViewController {
         let storyBoard = UIStoryboard(name: "StarredRepository", bundle: nil)

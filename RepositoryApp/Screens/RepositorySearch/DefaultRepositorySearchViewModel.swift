@@ -8,8 +8,7 @@
 import Foundation
 
 //MARK: RepositorySearchViewModelInterface
-protocol RepositorySearchViewModelInterface: AnyObject {
-    var coordinator: RepositorySearchCoordinator? { get }
+protocol RepositorySearchViewModel: AnyObject {
     
     var isRepositoryUsernameChanged: Bool { get set }
     var isPaginationInProcess: Bool { get set }
@@ -24,10 +23,10 @@ protocol RepositorySearchViewModelInterface: AnyObject {
     var repositoriesLoaded: ((_ repositories: [Repository]) -> Void)? { get set }
 }
 
-class RepositorySearchViewModel {
+class DefaultRepositorySearchViewModel {
     
     //MARK: Variables
-    var coordinator: RepositorySearchCoordinator?
+    private var coordinator: RepositorySearchCoordinator?
     private var repositorySearchUseCase: RepositorySearchUseCase?
     
     var isRepositoryUsernameChanged = false
@@ -47,7 +46,7 @@ class RepositorySearchViewModel {
 }
 
 //MARK: RepositorySearchViewModelInterface
-extension RepositorySearchViewModel: RepositorySearchViewModelInterface {
+extension DefaultRepositorySearchViewModel: RepositorySearchViewModel {
     func numberOfRowsInSection() -> Int {
         repositories.count
     }

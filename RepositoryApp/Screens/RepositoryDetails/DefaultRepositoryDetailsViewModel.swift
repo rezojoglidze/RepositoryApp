@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 
 //MARK: RepositorySearchViewModelInterface
-protocol RepositoryDetailsViewModelInterface: AnyObject {
+protocol RepositoryDetailsViewModel: AnyObject {
     var coordinator: RepositoryDetailsCoordinator { get }
     func getRepositoryDetails()
     func openUrl()
     
-    func checkIfRepoIsAlreadySaved() -> Bool
+    func updateStarBtnIsSelected() -> Bool
     func starBtnTapped(isSelected: Bool)
     
     var repositoryDetailsDidLoad: ((_ repository: Repository) -> Void)? { get set }
@@ -22,7 +22,7 @@ protocol RepositoryDetailsViewModelInterface: AnyObject {
 
 }
 
-class RepositoryDetailsViewModel {
+class DefaultRepositoryDetailsViewModel {
     
     //MARK: Variables
     var coordinator: RepositoryDetailsCoordinator
@@ -44,7 +44,7 @@ class RepositoryDetailsViewModel {
     }
 }
 
-extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
+extension DefaultRepositoryDetailsViewModel: RepositoryDetailsViewModel {
     func openUrl() {
         guard let url = URL(string: repository?.url ?? "") else { return }
         UIApplication.shared.open(url)
@@ -67,7 +67,7 @@ extension RepositoryDetailsViewModel: RepositoryDetailsViewModelInterface {
         }
     }
     
-    func checkIfRepoIsAlreadySaved() -> Bool {
+    func updateStarBtnIsSelected() -> Bool {
         guard let repository = repository else { return false }
         let fetchedRepositories = RepositoryEntity.fetchRepositories()
         
