@@ -13,7 +13,7 @@ protocol StarredRepositoryViewModel: AnyObject {
     
     func fetchRepositories()
     func numberOfRowsInSection() -> Int
-    func getRepository(with indexPath: IndexPath) -> RepositoryEntity
+    func itemForRowAt(with indexPath: IndexPath) -> RepositoryEntity
     func didSelectRowAt(at indexPath: IndexPath)
     
     var repositoriesLoaded: (() -> Void)? { get set }
@@ -44,7 +44,7 @@ extension DefaultStarredRepositoryViewModel: StarredRepositoryViewModel {
         repositories.count
     }
     
-    func getRepository(with indexPath: IndexPath) -> RepositoryEntity {
+    func itemForRowAt(with indexPath: IndexPath) -> RepositoryEntity {
         return repositories[indexPath.row]
     }
     

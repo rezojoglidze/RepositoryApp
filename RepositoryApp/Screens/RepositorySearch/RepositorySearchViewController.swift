@@ -73,7 +73,7 @@ extension RepositorySearchViewController: UITableViewDataSource, UITableViewDele
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RepositoryTableViewCell.self)) as? RepositoryTableViewCell
-        let repo = viewModel.getRepository(with: indexPath)
+        let repo = viewModel.itemForRowAt(with: indexPath)
         cell?.fill(username: repo.owner.ownerName, repositoryName: repo.fullName, imageUrl: repo.owner.avatarUrl)
         return cell ?? UITableViewCell()
     }

@@ -17,7 +17,7 @@ protocol RepositorySearchViewModel: AnyObject {
     func searchRepositories(name: String)
     
     func numberOfRowsInSection() -> Int
-    func getRepository(with indexPath: IndexPath) -> Repository
+    func itemForRowAt(with indexPath: IndexPath) -> Repository
     func didSelectRowAt(at indexPath: IndexPath)
     
     var repositoriesLoaded: ((_ repositories: [Repository]) -> Void)? { get set }
@@ -51,7 +51,7 @@ extension DefaultRepositorySearchViewModel: RepositorySearchViewModel {
         repositories.count
     }
     
-    func getRepository(with indexPath: IndexPath) -> Repository {
+    func itemForRowAt(with indexPath: IndexPath) -> Repository {
         return repositories[indexPath.row]
     }
     
